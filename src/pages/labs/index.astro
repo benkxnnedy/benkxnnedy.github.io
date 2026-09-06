@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const modules = import.meta.glob('./*.md', { eager: true });
+const labs = Object.entries(modules).map(([path, mod]) => ({ ...mod.frontmatter, slug: path.split('/').pop().replace('.md','') })).sort((a,b) => new Date(b.date ?? 0) - new Date(a.date ?? 0));
+---
+<BaseLayout title="Labs — Ben Kennedy">
+  <main><div class="container page-hero"><div class="eyebrow">Labs</div><h1>Learn it. Break it. Troubleshoot it. Automate it.</h1><p>Lab work built around failure and verification rather than simply reaching a working configuration. Add a Markdown file here and it appears automatically.</p></div>
+  <section class="section"><div class="container grid-3">{labs.map(p => <a class="card" href={`/labs/${p.slug}`}><div class="meta">{p.category ?? 'Lab'}</div><h3>{p.title}</h3><p>{p.summary}</p><div class="tags">{(p.tags ?? []).map(t => <span class="tag">{t}</span>)}</div><span class="read-more">Open lab →</span></a>)}</div></section></main>
+</BaseLayout>

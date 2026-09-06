@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const groups={
+'Routing & Switching':['Cisco IOS XE','NX-OS','OSPF','BGP','EIGRP','HSRP','VRF','MPLS','EVPN/VXLAN'],
+'Security & Identity':['Palo Alto Networks','Panorama','Cisco ISE','802.1X','TrustSec / SGT'],
+'Automation':['Python','Flask','REST APIs','NETCONF','RESTCONF','Netmiko','pyATS','Genie','Ansible','Terraform','Jinja2','Git'],
+'Operations & Observability':['Catalyst Center','ThousandEyes','PRTG','Syslog','Packet Analysis','Wireshark','tcpdump'],
+'Lab & Platforms':['Cisco CML','Proxmox','Linux','Arista EOS — developing','CI/CD — developing']};
+---
+<BaseLayout title="Skills — Ben Kennedy"><main><div class="container page-hero"><div class="eyebrow">Skills</div><h1>Broad production exposure, with deliberate depth where it matters.</h1><p>I’m building toward environments where routing fundamentals, systems knowledge, observability and automation are all expected from the same engineer.</p></div><section class="section"><div class="container">{Object.entries(groups).map(([g,items]) => <div class="skill-group"><h3>{g}</h3><div class="skill-list">{items.map(x => <span class="skill">{x}</span>)}</div></div>)}</div></section></main></BaseLayout>

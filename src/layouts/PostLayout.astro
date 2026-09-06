@@ -1,0 +1,24 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { frontmatter } = Astro.props;
+const { title, summary, date, tags = [], type = 'Journal', status } = frontmatter;
+const sectionPath = Astro.url.pathname.startsWith('/projects') ? '/projects' : Astro.url.pathname.startsWith('/labs') ? '/labs' : '/ccie-journal';
+const sectionLabel = sectionPath === '/projects' ? 'Projects' : sectionPath === '/labs' ? 'Labs' : 'CCIE Journal';
+const displayDate = date ? new Date(date).toLocaleDateString('en-GB', { year:'numeric', month:'long', day:'numeric' }) : '';
+---
+<BaseLayout title={`${title} — Ben Kennedy`} description={summary}>
+  <main class="article-wrap">
+    <a class="back-link" href={sectionPath}>← Back to {sectionLabel}</a>
+    <header class="article-header">
+      <div class="eyebrow" style="margin-top:26px"><span class="dot"></span>{type}</div>
+      <h1>{title}</h1>
+      {summary && <p class="article-summary">{summary}</p>}
+      <div class="article-meta">
+        {displayDate && <span>{displayDate}</span>}
+        {status && <span>· {status}</span>}
+      </div>
+      {tags.length > 0 && <div class="tags">{tags.map(tag => <span class="tag">{tag}</span>)}</div>}
+    </header>
+    <article class="prose"><slot /></article>
+  </main>
+</BaseLayout>
