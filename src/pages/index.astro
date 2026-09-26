@@ -1,32 +1,63 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import NetworkGraphic from '../components/NetworkGraphic.astro';
-const projectModules = import.meta.glob('./projects/*.md', { eager: true });
-const projects = Object.entries(projectModules)
+
+const postModules = import.meta.glob('./posts/*.md', { eager: true });
+const posts = Object.entries(postModules)
   .map(([path, mod]) => ({ ...mod.frontmatter, slug: path.split('/').pop().replace('.md','') }))
-  .filter(p => p.featured)
-  .sort((a,b) => (a.order ?? 999) - (b.order ?? 999))
-  .slice(0,3);
+  .sort((a,b) => new Date(b.date ?? 0).valueOf() - new Date(a.date ?? 0).valueOf())
+  .slice(0,2);
+const fmt = (d) => d ? new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', timeZone:'UTC' }) : '';
+
+const certifications = [
+  {
+    name: 'CCNP Enterprise',
+    logo: '/images/certifications/ccnp-enterprise.jpg',
+    logoAlt: 'Cisco Certified CCNP Enterprise',
+  },
+  {
+    name: 'Palo Alto NGFW Engineer Certified',
+    logo: '/images/certifications/palo-alto-ngfw-engineer.png',
+    logoAlt: 'Palo Alto Networks Next-Gen Firewall Engineer Certified',
+  },
+  {
+    name: 'CCNP Automation',
+    logo: '/images/certifications/ccnp-automation.png',
+    logoAlt: 'Cisco Certified CCNP Automation',
+  },
+];
 ---
 <BaseLayout>
   <main>
     <div class="container hero">
-      <div>
-        <div class="eyebrow"><span class="dot"></span>Network Engineer · Automation · CCIE EI</div>
+      <div class="hero-copy">
+        <div class="eyebrow">Network Engineer · Automation · Infrastructure</div>
         <h1>Engineering networks that are easier to operate, automate and trust.</h1>
-        <p class="lede">Production network engineer with hands-on experience across Cisco enterprise infrastructure, Palo Alto, ISE, Catalyst Center, ThousandEyes and network automation — now building toward CCIE Enterprise Infrastructure and financial-markets networking in London.</p>
-        <div class="actions"><a class="button primary" href="/projects">View projects</a><a class="button" href="/ccie-journal">CCIE journal</a><a class="button" href="/contact">Contact</a></div>
-        <div class="stat-row"><div class="stat"><strong>~2 yrs</strong><span>production networking</span></div><div class="stat"><strong>CCNP</strong><span>Enterprise + Automation path</span></div><div class="stat"><strong>Python</strong><span>production automation</span></div><div class="stat"><strong>London</strong><span>financial-markets target</span></div></div>
+        <p class="lede">Production network engineer with hands-on experience across Cisco enterprise infrastructure, Palo Alto, ISE, Catalyst Center, ThousandEyes and network automation — building deeper expertise for highly engineered financial infrastructure.</p>
+        <div class="actions"><a class="button primary" href="/posts">Read posts</a><a class="button" href="/contact">Contact</a></div>
       </div>
-      <NetworkGraphic />
     </div>
-    <section class="section"><div class="container"><div class="section-head"><div><div class="eyebrow">Selected work</div><h2>Built around real operational problems.</h2></div><p>I focus on work that improves how networks are operated: reducing repetitive effort, increasing visibility and making changes safer.</p></div>
-      <div class="grid-3">
-        {projects.map(p => <a class="card" href={`/projects/${p.slug}`}><div class="meta">{p.category ?? 'Project'}</div><h3>{p.title}</h3><p>{p.summary}</p><div class="tags">{(p.tags ?? []).map(t => <span class="tag">{t}</span>)}</div><span class="read-more">Read project →</span></a>)}
+
+    <section class="section"><div class="container"><div class="section-head"><div><div class="eyebrow">Latest posts</div><h2>From the lab and notebook.</h2></div></div>
+      <div class="post-feed compact">
+        {posts.map(post => <article class="post-feed-item"><time class="post-feed-date">{fmt(post.date)}</time><div class="post-feed-body"><div class="meta">{post.category ?? post.type ?? 'Post'}</div><h3><a href={`/posts/${post.slug}`}>{post.title}</a></h3><p>{post.summary}</p><div class="tags">{(post.tags ?? []).map(tag => <span class="tag">{tag}</span>)}</div><a class="read-more" href={`/posts/${post.slug}`}>Read post →</a></div></article>)}
       </div>
     </div></section>
-    <section class="section"><div class="container grid-2"><div><div class="eyebrow">Current focus</div><h2>Depth first.</h2><p class="lede">The current priority is developing CCIE-level networking and troubleshooting depth while adding the skills that matter in highly engineered financial infrastructure: Linux, multicast, Arista, packet analysis, EVPN/VXLAN and automation.</p><div class="actions"><a class="button" href="/skills">See the stack</a><a class="button" href="/labs">Browse labs</a></div></div>
-      <div class="terminal"><div class="terminal-head"><span></span><span></span><span></span></div><div class="terminal-body"><div><span class="prompt">ben@lab:~$</span> current-focus</div><div class="output">→ CCIE Enterprise Infrastructure</div><div class="output">→ Linux networking + packet analysis</div><div class="output">→ Multicast + BGP + EVPN/VXLAN</div><div class="output">→ Arista EOS</div><div class="output">→ Python / APIs / IaC / CI-CD</div><br/><div><span class="prompt">ben@lab:~$</span> destination</div><div class="output">→ London financial-markets infrastructure</div></div></div>
-    </div></section>
+
+    <section class="section" id="certifications">
+      <div class="container">
+        <div class="credentials-heading"><div class="eyebrow">Credentials</div><h2>Industry certifications.</h2></div>
+        <div class="credentials-grid">
+          {certifications.map(certification => (
+            <article class="credential-card">
+              <div class="credential-logo"><img src={certification.logo} alt={certification.logoAlt} width="140" height="140" loading="lazy" /></div>
+              <div class="credential-content">
+                <h3>{certification.name}</h3>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
   </main>
 </BaseLayout>

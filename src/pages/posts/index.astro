@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const modules = import.meta.glob('./*.md', { eager: true });
+const posts = Object.entries(modules)
+  .map(([path, mod]) => ({ ...mod.frontmatter, slug: path.split('/').pop().replace('.md','') }))
+  .sort((a,b) => new Date(b.date ?? 0).valueOf() - new Date(a.date ?? 0).valueOf());
+const fmt = (d) => d ? new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', timeZone:'UTC' }) : 'Draft';
+---
+<BaseLayout title="Posts — Ben Kennedy">
+  <main>
+    <div class="container page-hero">
+      <div class="eyebrow">Posts</div>
+      <h1>Notes from the lab and the work.</h1>
+      <p>Network engineering labs, troubleshooting write-ups and technical ideas worth retaining.</p>
+    </div>
+    <section class="section">
+      <div class="container post-feed">
+        {posts.map(post => (
+          <article class="post-feed-item">
+            <time class="post-feed-date">{fmt(post.date)}</time>
+            <div class="post-feed-body">
+              <div class="meta">{post.category ?? post.type ?? 'Post'}</div>
+              <h2><a href={`/posts/${post.slug}`}>{post.title}</a></h2>
+              <p>{post.summary}</p>
+              <div class="tags">{(post.tags ?? []).map(tag => <span class="tag">{tag}</span>)}</div>
+              <a class="read-more" href={`/posts/${post.slug}`}>Read post →</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>

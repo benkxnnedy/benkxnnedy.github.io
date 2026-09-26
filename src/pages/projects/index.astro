@@ -1,9 +1,0 @@
----
-import BaseLayout from '../../layouts/BaseLayout.astro';
-const modules = import.meta.glob('./*.md', { eager: true });
-const projects = Object.entries(modules).map(([path, mod]) => ({ ...mod.frontmatter, slug: path.split('/').pop().replace('.md','') })).sort((a,b) => (a.order ?? 999) - (b.order ?? 999));
----
-<BaseLayout title="Projects — Ben Kennedy">
-  <main><div class="container page-hero"><div class="eyebrow">Projects</div><h1>Automation that supports operators, not automation for its own sake.</h1><p>Operational efficiency, repeatability, observability and safer network engineering. Every card below is generated from a Markdown file.</p></div>
-  <section class="section"><div class="container grid-2">{projects.map(p => <a class="card" href={`/projects/${p.slug}`}><div class="meta">{p.category ?? 'Project'}</div><h3>{p.title}</h3><p>{p.summary}</p><div class="tags">{(p.tags ?? []).map(t => <span class="tag">{t}</span>)}</div><span class="read-more">Read project →</span></a>)}</div></section></main>
-</BaseLayout>

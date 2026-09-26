@@ -2,8 +2,21 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../data/site.js';
 ---
-<BaseLayout title="Contact — Ben Kennedy"><main><div class="container page-hero" style="max-width:800px"><div class="eyebrow">Contact</div><h1>Interested in serious network engineering problems.</h1><p>I’m particularly interested in conversations around network engineering, automation, financial-markets infrastructure and London-based opportunities.</p><div class="contact-links">
-  {site.linkedin ? <a class="contact-link" href={site.linkedin} target="_blank" rel="noreferrer"><strong>LinkedIn</strong><small>View profile →</small></a> : <div class="contact-link"><strong>LinkedIn</strong><small>Add in src/data/site.js</small></div>}
-  {site.github ? <a class="contact-link" href={site.github} target="_blank" rel="noreferrer"><strong>GitHub</strong><small>View profile →</small></a> : <div class="contact-link"><strong>GitHub</strong><small>Add in src/data/site.js</small></div>}
-  {site.email ? <a class="contact-link" href={`mailto:${site.email}`}><strong>Email</strong><small>{site.email}</small></a> : <div class="contact-link"><strong>Email</strong><small>Add in src/data/site.js</small></div>}
-</div><div class="callout" style="margin-top:28px">Contact details remain placeholders until you choose exactly what should be public.</div></div></main></BaseLayout>
+<BaseLayout title="Contact — Ben Kennedy">
+  <main>
+    <div class="container page-hero" style="max-width:800px">
+      <div class="eyebrow">Contact</div>
+      <h1>Find me online.</h1>
+      <div class="contact-links">
+        <a class="contact-link" href={site.linkedin} target="_blank" rel="noreferrer">
+          <strong>LinkedIn</strong>
+          <small>View profile →</small>
+        </a>
+        <a class="contact-link" href={site.github} target="_blank" rel="noreferrer">
+          <strong>GitHub</strong>
+          <small>View profile →</small>
+        </a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

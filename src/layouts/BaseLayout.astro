@@ -4,7 +4,7 @@ import { site } from '../data/site.js';
 const { title = site.title, description = site.description } = Astro.props;
 const path = Astro.url.pathname;
 const links = [
-  ['About','/about'],['Projects','/projects'],['Labs','/labs'],['CCIE Journal','/ccie-journal'],['Skills','/skills'],['Contact','/contact']
+  ['About','/about'],['Posts','/posts'],['Contact','/contact']
 ];
 const active = (href) => href === '/' ? path === '/' : path.startsWith(href);
 ---
@@ -20,7 +20,7 @@ const active = (href) => href === '/' ? path === '/' : path.startsWith(href);
   <body>
     <header class="site-header">
       <div class="container nav">
-        <a href="/" class="brand"><span class="brand-mark">BK</span><span>{site.name}</span></a>
+        <a href="/" class="brand">{site.name}</a>
         <nav class="nav-links" aria-label="Primary navigation">
           {links.map(([label,href]) => <a class={active(href) ? 'active' : ''} href={href}>{label}</a>)}
         </nav>
